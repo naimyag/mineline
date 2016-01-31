@@ -66,6 +66,7 @@ public class MainActivity extends Activity {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         location =locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
+        
 
     }
 
