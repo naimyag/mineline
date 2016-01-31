@@ -34,8 +34,7 @@ public class MainActivity extends Activity {
     private static final String POINT_LATITUDE_KEY = "POINT_LATITUDE_KEY";
     private static final String POINT_LONGITUDE_KEY = "POINT_LONGITUDE_KEY";
 
-    private static final String PROX_ALERT_INTENT =
-            "com.javacodegeeks.android.lbs.ProximityAlert";
+    private static final String PROX_ALERT_INTENT = "com.javacodegeeks.android.lbs.ProximityAlert";
 
     private static final NumberFormat nf = new DecimalFormat("##.########");
 
@@ -47,8 +46,10 @@ public class MainActivity extends Activity {
     private Button findCoordinatesButton;
     private Button savePointButton;
     private TextView tv_loc;
+    private Button btn_sorgu;
 
     private void init(){
+        btn_sorgu= (Button) findViewById(R.id.btn_sorgu);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -66,7 +67,7 @@ public class MainActivity extends Activity {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         location =locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-        
+
 
     }
 
@@ -78,6 +79,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         init();
+
+        addProximityAlert(location.getLatitude(),location.getLongitude());
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -118,6 +121,13 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 saveProximityAlertPoint();
+            }
+        });
+
+        btn_sorgu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addProximityAlert(location.getLatitude(),location.getLongitude());
             }
         });
 
