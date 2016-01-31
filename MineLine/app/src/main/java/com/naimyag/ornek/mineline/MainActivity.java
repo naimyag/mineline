@@ -67,7 +67,7 @@ public class MainActivity extends Activity {
         location =locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
 
-    };
+    }
 
 
     @Override
@@ -142,7 +142,7 @@ public class MainActivity extends Activity {
 
 
         if (location==null) {
-            Toast.makeText(this, "No last known location. Aborting...",
+            Toast.makeText(this, "No last known location. Aborting....",
                     Toast.LENGTH_LONG).show();
             return;
         }
