@@ -2,6 +2,8 @@ package com.naimyag.ornek.mineline;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -26,9 +28,9 @@ import java.text.NumberFormat;
 public class MainActivity extends Activity {
 
     private static final long MINIMUM_DISTANCECHANGE_FOR_UPDATE = 1; //  in Meters
-    private static final long MINIMUM_TIME_BETWEEN_UPDATE = 1000; // dakikada bir in Milliseconds
+    private static final long MINIMUM_TIME_BETWEEN_UPDATE = 500; // yarım dakikada bir in Milliseconds
 
-    private static final long POINT_RADIUS = 10; // in Meters
+    private static final long POINT_RADIUS = 5; // in Meters
     private static final long PROX_ALERT_EXPIRATION = -1;
 
     private static final String POINT_LATITUDE_KEY = "POINT_LATITUDE_KEY";
@@ -37,6 +39,7 @@ public class MainActivity extends Activity {
     private static final String PROX_ALERT_INTENT = "com.javacodegeeks.android.lbs.ProximityAlert";
 
     private static final NumberFormat nf = new DecimalFormat("##.########");
+
 
     private LocationManager locationManager;
     Location location;
@@ -48,7 +51,10 @@ public class MainActivity extends Activity {
     private TextView tv_loc;
     private Button btn_sorgu;
 
+
     private void init(){
+
+
         btn_sorgu= (Button) findViewById(R.id.btn_sorgu);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -67,6 +73,10 @@ public class MainActivity extends Activity {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         location =locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
+        if (location!=null) {
+            addProximityAlert(location.getLatitude(),location.getLongitude());
+
+        }
 
 
     }
@@ -80,7 +90,7 @@ public class MainActivity extends Activity {
 
         init();
 
-        addProximityAlert(location.getLatitude(),location.getLongitude());
+       // addProximityAlert(location.getLatitude(), location.getLongitude());
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -127,7 +137,10 @@ public class MainActivity extends Activity {
         btn_sorgu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addProximityAlert(location.getLatitude(),location.getLongitude());
+                if (location!=null) {
+                    addProximityAlert(location.getLatitude(),location.getLongitude());
+
+                }
             }
         });
 

@@ -8,14 +8,48 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.LocationManager;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Created by Naim on 31.01.2016.
  */
 public class ProximityIntentReceiver extends BroadcastReceiver {
 
+    Context context;
+
     private static final int NOTIFICATION_ID = 1000;
+
+
+
+    public void notification(){
+
+        NotificationManager mng =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        Notification.Builder nb = new Notification.Builder(context);
+
+        // API 21+ olması lazım
+        // nb.setColor(Color.GREEN);
+
+        nb.setContentText("Hoşgeldin Beşgittin!!");
+        nb.setContentTitle("MineLine");
+        nb.setSmallIcon(R.drawable.alerts);
+        nb.setVibrate(new long[] {400L, 400L});
+
+
+        // API 16+ build altında getNotification()
+        // Notification not = nb.build();
+        Notification not = nb.getNotification();
+
+        mng.notify(1, not);
+
+
+    }
+
+
+
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -25,6 +59,9 @@ public class ProximityIntentReceiver extends BroadcastReceiver {
         Boolean entering = intent.getBooleanExtra(key, false);
 
         if (entering) {
+
+
+            Toast.makeText(context, "HOŞGELDİN!", Toast.LENGTH_LONG).show();
             Log.d(getClass().getSimpleName(), "entering");
 
             NotificationManager notificationManager =
@@ -54,6 +91,7 @@ public class ProximityIntentReceiver extends BroadcastReceiver {
 
 
 
+
             //  notification.setLatestEventInfo(context, "Proximity Alert!", "You are near your point of interest.", pendingIntent);
 
             Notification.Builder builder = new Notification.Builder(context);
@@ -78,11 +116,17 @@ public class ProximityIntentReceiver extends BroadcastReceiver {
         }
         else {
             Log.d(getClass().getSimpleName(), "exiting");
+
+            Toast.makeText(context, "GÜLE GÜLE!", Toast.LENGTH_LONG).show();
         }
 
 
 
     }
+
+
+
+
 
  // private Notification createNotification() {
 
