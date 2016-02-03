@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.inject.Provider;
 
-import in.itunav.indoormaps.network.JsonApi;
+import com.naimyag.ornek.mineline.JsonApi;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 
