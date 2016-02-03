@@ -13,7 +13,8 @@ import retrofit.converter.GsonConverter;
 
 public class JsonApiProvider implements Provider<JsonApi> {
 
-    public static final String ENDPOINT = "http://78.46.64.29";
+   // public static final String ENDPOINT = "http://78.46.64.29";
+    public static final String ENDPOINT = "eu-cdbr-azure-west-d.cloudapp.net";
 
     @Override
     public JsonApi get() {

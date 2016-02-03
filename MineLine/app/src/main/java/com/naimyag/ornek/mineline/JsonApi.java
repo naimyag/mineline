@@ -20,6 +20,10 @@ import retrofit.http.Streaming;
 import rx.Observable;
 
 public interface JsonApi {
+
+
+
+    /*
     @GET("/index.php/v1/buildings.json")
     Observable<List<Building>> buildings();
 
@@ -70,4 +74,5 @@ public interface JsonApi {
     @GET("/index.php/v1/map/{id}")
     @Streaming
     Observable<Response> downloadMap(@Path("id") long buildingId);
+    */
 }
