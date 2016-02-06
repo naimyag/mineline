@@ -50,4 +50,11 @@
         android:id="@+id/btn_sorgu"
         android:layout_gravity="center_horizontal" />
 
+    <fragment
+        android:id="@+id/fragment_map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
 </LinearLayout>
