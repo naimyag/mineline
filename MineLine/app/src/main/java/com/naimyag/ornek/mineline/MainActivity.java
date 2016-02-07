@@ -14,7 +14,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,24 +22,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.inject.Inject;
-
-import roboguice.activity.RoboActionBarActivity;
-import roboguice.inject.ContentView;
-import roboguice.inject.InjectFragment;
-import roboguice.inject.InjectView;
-
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-@ContentView(R.layout.activity_main)
-public class MainActivity extends RoboActionBarActivity {
-    private static final String TAG = MainActivity.class.getSimpleName();
+public class MainActivity extends Activity {
 
     private static final long MINIMUM_DISTANCECHANGE_FOR_UPDATE = 1; //  in Meters
     private static final long MINIMUM_TIME_BETWEEN_UPDATE = 500; // yarım dakikada bir in Milliseconds
 
-    private static final long POINT_RADIUS = 5; // in Meters
+    private static final long POINT_RADIUS = 10; // in Meters
     private static final long PROX_ALERT_EXPIRATION = -1;
 
     private static final String POINT_LATITUDE_KEY = "POINT_LATITUDE_KEY";
@@ -50,36 +40,22 @@ public class MainActivity extends RoboActionBarActivity {
 
     private static final NumberFormat nf = new DecimalFormat("##.########");
 
-    @Inject
-    private FragmentManager fragmentManager;
-
-    @InjectView(R.id.btn_sorgu)
-    private Button btnsorgu;
-
-    @InjectView(R.id.find_coordinates_button)
-    private Button getFindCoordinatesButton;
-
-    @InjectView(R.id.save_point_button)
-    private Button getSavePointButton;
-
-    @InjectView(R.id.point_latitude)
-    private EditText latitudeEditText;
-
-    @InjectView(R.id.point_longitude)
-    private EditText longitudeEditText;
-
-    @InjectView(R.id.tv_loc)
-    private TextView tvloc;
-
-
 
     private LocationManager locationManager;
     Location location;
 
+    private EditText latitudeEditText;
+    private EditText longitudeEditText;
+    private Button findCoordinatesButton;
+    private Button savePointButton;
+    private TextView tv_loc;
+    private Button btn_sorgu;
 
 
     private void init(){
 
+
+        btn_sorgu= (Button) findViewById(R.id.btn_sorgu);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -140,25 +116,25 @@ public class MainActivity extends RoboActionBarActivity {
 
         latitudeEditText = (EditText) findViewById(R.id.point_latitude);
         longitudeEditText = (EditText) findViewById(R.id.point_longitude);
-        getFindCoordinatesButton = (Button) findViewById(R.id.find_coordinates_button);
-        getSavePointButton = (Button) findViewById(R.id.save_point_button);
-        tvloc= (TextView) findViewById(R.id.tv_loc);
+        findCoordinatesButton = (Button) findViewById(R.id.find_coordinates_button);
+        savePointButton = (Button) findViewById(R.id.save_point_button);
+        tv_loc= (TextView) findViewById(R.id.tv_loc);
 
-        getFindCoordinatesButton.setOnClickListener(new View.OnClickListener() {
+        findCoordinatesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 populateCoordinatesFromLastKnownLocation();
             }
         });
 
-        getSavePointButton.setOnClickListener(new View.OnClickListener() {
+        savePointButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveProximityAlertPoint();
             }
         });
 
-        btnsorgu.setOnClickListener(new View.OnClickListener() {
+        btn_sorgu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (location!=null) {
@@ -191,7 +167,7 @@ public class MainActivity extends RoboActionBarActivity {
 
         if (location==null) {
             Toast.makeText(this, "No last known location. Aborting....",
-                    Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_SHORT).show();
             return;
         }
         saveCoordinatesInPreferences((float) location.getLatitude(),
@@ -261,7 +237,7 @@ public class MainActivity extends RoboActionBarActivity {
         prefsEditor.putFloat(POINT_LONGITUDE_KEY, longitude);
         prefsEditor.commit();
 
-        Toast.makeText(this, "Lokasyon kaydedildi!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Lokasyon kaydedildi!", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -280,8 +256,8 @@ public class MainActivity extends RoboActionBarActivity {
             Location pointLocation = retrievelocationFromPreferences();
             float distance = location.distanceTo(pointLocation);
             Toast.makeText(MainActivity.this,
-                    "Distance from Point:"+distance, Toast.LENGTH_LONG).show();
-            tvloc.setText("Distance from Point:"+distance);
+                    "Distance from Point:"+distance, Toast.LENGTH_SHORT).show();
+            tv_loc.setText("Distance from Point:"+distance);
         }
         public void onStatusChanged(String s, int i, Bundle b) {
         }

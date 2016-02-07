@@ -26,7 +26,7 @@ public class JsonApiProvider implements Provider<JsonApi> {
                 .setEndpoint(ENDPOINT)
                 .setConverter(new GsonConverter(gson))
                 .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setLog(msg -> Log.i("Retrofit", msg))
+             //   .setLog(msg -> Log.i("Retrofit", msg))
                 .build();
 
         return restAdapter.create(JsonApi.class);

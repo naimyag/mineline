@@ -26,7 +26,7 @@ public class ProximityIntentReceiver extends BroadcastReceiver {
         if (entering) {
 
 
-            Toast.makeText(context, "HOŞGELDİN!", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "HOŞGELDİN!", Toast.LENGTH_SHORT).show();
             Log.d(getClass().getSimpleName(), "entering");
 
 

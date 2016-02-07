@@ -41,7 +41,7 @@ public class connectAsyncTask extends AsyncTask<Void, Void, String>
         super.onPostExecute(result);
         progressDialog.hide();
         if (result != null) {
-            drawPath(result, steps);
+            //drawPath(result, steps);
         }
     }
 }

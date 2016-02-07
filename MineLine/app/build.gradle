@@ -26,6 +26,4 @@ dependencies {
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.google.inject:guice:4.0'
     compile 'com.infstory:retrofit:2.0.0'
-    provided 'org.roboguice:roboblender:3.0.1'
-    compile 'org.roboguice:roboguice:3.0.1'
 }
