@@ -50,4 +50,6 @@
         android:id="@+id/btn_sorgu"
         android:layout_gravity="center_horizontal" />
 
+
+
 </LinearLayout>

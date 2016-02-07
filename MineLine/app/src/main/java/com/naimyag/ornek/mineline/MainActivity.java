@@ -1,7 +1,6 @@
 package com.naimyag.ornek.mineline;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -13,20 +12,24 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.List;
 
-import rx.functions.Action1;
-
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity implements OnMapReadyCallback
+ {
 
     private static final long MINIMUM_DISTANCECHANGE_FOR_UPDATE = 1; //  in Meters
     private static final long MINIMUM_TIME_BETWEEN_UPDATE = 500; // yarım dakikada bir in Milliseconds
@@ -41,6 +44,7 @@ public class MainActivity extends Activity {
 
     private static final NumberFormat nf = new DecimalFormat("##.########");
 
+    private GoogleMap mMap;
 
     private LocationManager locationManager;
     Location location;
@@ -53,8 +57,18 @@ public class MainActivity extends Activity {
     private Button btn_sorgu;
 
 
-    private void init(){
 
+   //  private void addMapFragment() {
+   //      FragmentManager manager = getSupportFragmentManager();
+   //      FragmentTransaction transaction = manager.beginTransaction();
+   //      MapFragment fragment = new MapFragment();
+   //      transaction.add(R.id.mapView, fragment);
+   //      transaction.commit();
+   //  }
+
+     private void init(){
+
+       //  addMapFragment();
 
         btn_sorgu= (Button) findViewById(R.id.btn_sorgu);
 
@@ -138,33 +152,12 @@ public class MainActivity extends Activity {
         btn_sorgu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (location!=null) {
-                    addProximityAlert(location.getLatitude(),location.getLongitude());
+                if (location != null) {
+                    addProximityAlert(location.getLatitude(), location.getLongitude());
 
                 }
             }
         });
-//pushdenemesi
-        /////Bağlantı denemesi json gson falan filan
-        JsonApiProvider asd = new JsonApiProvider();
-        asd.get().getuser().subscribe(
-                new Action1<List<User>>() {
-                 @Override
-                 public void call(List<User> users) {
-                     for (int i = 0; i < users.size(); i++) {
-                         Log.e("csd", users.get(i).getName() + " " + users.get(i).getSurname());
-                     }
-                 }
-             },
-                new Action1<Throwable>() {
-
-                    @Override
-                    public void call(Throwable throwable) {
-                        Log.e("csd",throwable.getMessage());
-                    }
-                }
-        );
-        ////
 
     }
 
@@ -272,6 +265,17 @@ public class MainActivity extends Activity {
         location.setLongitude(prefs.getFloat(POINT_LONGITUDE_KEY, 0));
         return location;
     }
+
+   @Override
+   public void onMapReady(GoogleMap googleMap) {
+       mMap = googleMap;
+
+       // Add a marker in Sydney and move the camera
+       LatLng sydney = new LatLng(-34, 151);
+       mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+       mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+   }
 
     public class MyLocationListener implements LocationListener {
         public void onLocationChanged(Location location) {
