@@ -1,26 +1,14 @@
 package com.naimyag.ornek.mineline;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.naimyag.ornek.mineline.User;
-import com.naimyag.ornek.mineline.Konum;
-
-import retrofit.client.Response;
-import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
-import retrofit.http.POST;
-import retrofit.http.Path;
-import retrofit.http.Streaming;
 import rx.Observable;
 
 public interface JsonApi {
 
-    @FormUrlEncoded
-    @POST("/index.php/v1/people/search")
-    Observable<List<User>> sendUser(@Field("name") String name, @Field("surname") String surname, @Field("id") int id);
-
+    @GET("/api/mayin")
+    Observable<List<User>> getuser();
 
 
     /*

@@ -1,20 +1,17 @@
 package com.naimyag.ornek.mineline;
 
-import android.util.Log;
-
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.inject.Provider;
 
-import com.naimyag.ornek.mineline.JsonApi;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 
 public class JsonApiProvider implements Provider<JsonApi> {
 
    // public static final String ENDPOINT = "http://78.46.64.29";
-    public static final String ENDPOINT = "eu-cdbr-azure-west-d.cloudapp.net";
+    public static final String ENDPOINT = "http://mineline.azurewebsites.net";
 
     @Override
     public JsonApi get() {

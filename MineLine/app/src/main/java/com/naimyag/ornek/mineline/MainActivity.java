@@ -2,8 +2,6 @@ package com.naimyag.ornek.mineline;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -14,8 +12,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +22,9 @@ import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.List;
+
+import rx.functions.Action1;
 
 public class MainActivity extends Activity {
 
@@ -143,6 +144,27 @@ public class MainActivity extends Activity {
                 }
             }
         });
+
+        /////Bağlantı denemesi json gson falan filan
+        JsonApiProvider asd = new JsonApiProvider();
+        asd.get().getuser().subscribe(
+                new Action1<List<User>>() {
+                 @Override
+                 public void call(List<User> users) {
+                     for (int i = 0; i < users.size(); i++) {
+                         Log.e("csd", users.get(i).getName() + " " + users.get(i).getSurname());
+                     }
+                 }
+             },
+                new Action1<Throwable>() {
+
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.e("csd",throwable.getMessage());
+                    }
+                }
+        );
+        ////
 
     }
 
