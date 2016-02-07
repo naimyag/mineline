@@ -144,7 +144,7 @@ public class MainActivity extends Activity {
                 }
             }
         });
-
+//pushdenemesi
         /////Bağlantı denemesi json gson falan filan
         JsonApiProvider asd = new JsonApiProvider();
         asd.get().getuser().subscribe(
