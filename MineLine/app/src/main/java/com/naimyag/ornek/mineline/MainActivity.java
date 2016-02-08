@@ -29,7 +29,6 @@ import rx.functions.Action1;
 
 public class MainActivity extends Activity {
 
-
     private static final long MINIMUM_DISTANCECHANGE_FOR_UPDATE = 1; //  in Meters
     private static final long MINIMUM_TIME_BETWEEN_UPDATE = 500; // yarım dakikada bir in Milliseconds
 
