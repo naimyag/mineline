@@ -29,6 +29,7 @@ import rx.functions.Action1;
 
 public class MainActivity extends Activity {
 
+
     private static final long MINIMUM_DISTANCECHANGE_FOR_UPDATE = 1; //  in Meters
     private static final long MINIMUM_TIME_BETWEEN_UPDATE = 500; // yarım dakikada bir in Milliseconds
 
@@ -53,7 +54,7 @@ public class MainActivity extends Activity {
     private TextView tv_loc;
     private TextView tv_user;
     private Button btn_sorgu;
-    ArrayList<String> user = new ArrayList<String>();
+    ArrayList<String> user = new ArrayList<>();
 
 
     private void init(){
@@ -146,11 +147,10 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 if (location!=null) {
                     addProximityAlert(location.getLatitude(), location.getLongitude());
-
-                    for (int i=0; i<user.size();i++){
-                        tv_user.append(user.get(i));
-                        tv_user.append("\n");
                     }
+                for (int i=0; i<user.size();i++){
+                    tv_user.append(user.get(i));
+                    tv_user.append("\n");
 
                 }
             }
