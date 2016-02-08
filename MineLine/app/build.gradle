@@ -3,9 +3,8 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
-
     defaultConfig {
-        applicationId "com.naimyag.ornek.mineline"
+        applicationId 'com.naimyag.ornek.mineline'
         minSdkVersion 17
         targetSdkVersion 23
         versionCode 1
@@ -17,14 +16,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    //testCompile 'junit:junit:4.12'
+    testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
-    //compile 'com.google.code.gson:gson:2.2.4'
-    //compile 'com.google.inject:guice:4.0'
-    //compile 'com.infstory:retrofit:2.0.0'
-    compile 'com.google.android.gms:play-services:8.1.0'
+    compile 'com.google.code.gson:gson:2.4'
+    compile 'com.google.inject:guice:4.0'
+    compile 'com.infstory:retrofit:2.0.0'
 }

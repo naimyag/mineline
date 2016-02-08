@@ -1,6 +1,7 @@
 package com.naimyag.ornek.mineline;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -12,24 +13,21 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback
- {
+import rx.functions.Action1;
+
+public class MainActivity extends Activity {
 
     private static final long MINIMUM_DISTANCECHANGE_FOR_UPDATE = 1; //  in Meters
     private static final long MINIMUM_TIME_BETWEEN_UPDATE = 500; // yarım dakikada bir in Milliseconds
@@ -44,7 +42,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     private static final NumberFormat nf = new DecimalFormat("##.########");
 
-    private GoogleMap mMap;
 
     private LocationManager locationManager;
     Location location;
@@ -54,23 +51,22 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private Button findCoordinatesButton;
     private Button savePointButton;
     private TextView tv_loc;
+    private TextView tv_user;
     private Button btn_sorgu;
+    ArrayList<String> user = new ArrayList<String>();
 
 
+    private void init(){
 
-   //  private void addMapFragment() {
-   //      FragmentManager manager = getSupportFragmentManager();
-   //      FragmentTransaction transaction = manager.beginTransaction();
-   //      MapFragment fragment = new MapFragment();
-   //      transaction.add(R.id.mapView, fragment);
-   //      transaction.commit();
-   //  }
 
-     private void init(){
-
-       //  addMapFragment();
-
+        latitudeEditText = (EditText) findViewById(R.id.point_latitude);
+        longitudeEditText = (EditText) findViewById(R.id.point_longitude);
+        findCoordinatesButton = (Button) findViewById(R.id.find_coordinates_button);
+        savePointButton = (Button) findViewById(R.id.save_point_button);
+        tv_loc= (TextView) findViewById(R.id.tv_loc);
+        tv_user= (TextView) findViewById(R.id.tv_user);
         btn_sorgu= (Button) findViewById(R.id.btn_sorgu);
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -129,11 +125,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 new MyLocationListener()
         );
 
-        latitudeEditText = (EditText) findViewById(R.id.point_latitude);
-        longitudeEditText = (EditText) findViewById(R.id.point_longitude);
-        findCoordinatesButton = (Button) findViewById(R.id.find_coordinates_button);
-        savePointButton = (Button) findViewById(R.id.save_point_button);
-        tv_loc= (TextView) findViewById(R.id.tv_loc);
+
 
         findCoordinatesButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,12 +144,45 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         btn_sorgu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (location != null) {
+                if (location!=null) {
                     addProximityAlert(location.getLatitude(), location.getLongitude());
+
+                    for (int i=0; i<user.size();i++){
+                        tv_user.append(user.get(i));
+                        tv_user.append("\n");
+                    }
 
                 }
             }
         });
+//pushdenemesi
+        /////Bağlantı denemesi json gson falan filan
+        JsonApiProvider asd = new JsonApiProvider();
+        asd.get().getuser().subscribe(
+                new Action1<List<User>>() {
+                 @Override
+                 public void call(List<User> users) {
+                     for (int i = 0; i < users.size(); i++) {
+                         Log.e("csd", users.get(i).getName() + " " + users.get(i).getSurname());
+                        user.add(i, "Kullanıcı Adı: " + users.get(i).getName() + " " + users.get(i).getSurname());
+
+
+                         }
+
+
+
+
+                 }
+             },
+                new Action1<Throwable>() {
+
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.e("csd",throwable.getMessage());
+                    }
+                }
+        );
+        ////
 
     }
 
@@ -181,7 +206,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         if (location==null) {
-            Toast.makeText(this, "No last known location. Aborting....",
+            Toast.makeText(this, "Son lokasyon alınamadı!",
                     Toast.LENGTH_SHORT).show();
             return;
         }
@@ -252,8 +277,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         prefsEditor.putFloat(POINT_LONGITUDE_KEY, longitude);
         prefsEditor.commit();
 
-        Toast.makeText(this, "Lokasyon kaydedildi!", Toast.LENGTH_SHORT).show();
-
+        if(prefsEditor.commit()) {
+            Toast.makeText(this, "Lokasyon kaydedildi!", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(this, "Lokasyon kaydedilemedi!!!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private Location retrievelocationFromPreferences() {
@@ -266,23 +294,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         return location;
     }
 
-   @Override
-   public void onMapReady(GoogleMap googleMap) {
-       mMap = googleMap;
-
-       // Add a marker in Sydney and move the camera
-       LatLng sydney = new LatLng(-34, 151);
-       mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-       mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
-   }
-
     public class MyLocationListener implements LocationListener {
         public void onLocationChanged(Location location) {
             Location pointLocation = retrievelocationFromPreferences();
             float distance = location.distanceTo(pointLocation);
-            Toast.makeText(MainActivity.this,
-                    "Distance from Point:"+distance, Toast.LENGTH_SHORT).show();
+        //    Toast.makeText(MainActivity.this,
+        //            "Distance from Point:"+distance, Toast.LENGTH_SHORT).show();
             tv_loc.setText("Distance from Point:"+distance);
         }
         public void onStatusChanged(String s, int i, Bundle b) {
