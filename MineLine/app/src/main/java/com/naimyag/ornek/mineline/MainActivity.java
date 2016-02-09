@@ -2,6 +2,8 @@ package com.naimyag.ornek.mineline;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +60,16 @@ public class MainActivity extends Activity {
 
 
     private void init(){
+
+        LinearLayout pnlMain = (LinearLayout) this.findViewById(R.id.pnlMain);
+
+        FragmentManager mng =  this.getFragmentManager();
+
+        FragmentTransaction trs = mng.beginTransaction();
+
+       // trs.add(R.id.pnlMain, new Parca2());
+
+        trs.commit();
 
 
         latitudeEditText = (EditText) findViewById(R.id.point_latitude);
@@ -147,6 +160,7 @@ public class MainActivity extends Activity {
                 if (location!=null) {
                     addProximityAlert(location.getLatitude(), location.getLongitude());
                     }
+                tv_user.setText("");
                 for (int i=0; i<user.size();i++){
                     tv_user.append(user.get(i));
                     tv_user.append("\n");
