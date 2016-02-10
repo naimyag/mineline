@@ -2,8 +2,7 @@ package com.naimyag.ornek.mineline;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.app.ActivityOptions;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -19,7 +18,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,20 +54,11 @@ public class MainActivity extends Activity {
     private TextView tv_loc;
     private TextView tv_user;
     private Button btn_sorgu;
+    private Button btn_harita;
     ArrayList<String> user = new ArrayList<>();
 
 
     private void init(){
-
-        LinearLayout pnlMain = (LinearLayout) this.findViewById(R.id.pnlMain);
-
-        FragmentManager mng =  this.getFragmentManager();
-
-        FragmentTransaction trs = mng.beginTransaction();
-
-       // trs.add(R.id.pnlMain, new Parca2());
-
-        trs.commit();
 
 
         latitudeEditText = (EditText) findViewById(R.id.point_latitude);
@@ -79,6 +68,7 @@ public class MainActivity extends Activity {
         tv_loc= (TextView) findViewById(R.id.tv_loc);
         tv_user= (TextView) findViewById(R.id.tv_user);
         btn_sorgu= (Button) findViewById(R.id.btn_sorgu);
+        btn_harita= (Button) findViewById(R.id.btn_harita);
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -168,6 +158,18 @@ public class MainActivity extends Activity {
                 }
             }
         });
+
+        btn_harita.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MainActivity.this, Harita.class);
+                Bundle bundle = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.animation, R.anim.animation2).toBundle();
+                startActivity(intent, bundle);
+
+            }
+        });
+
 //pushdenemesi
         /////Bağlantı denemesi json gson falan filan
         JsonApiProvider asd = new JsonApiProvider();
