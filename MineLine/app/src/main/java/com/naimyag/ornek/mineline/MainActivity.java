@@ -28,7 +28,7 @@ import java.util.List;
 
 import rx.functions.Action1;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements View.OnClickListener {
 
     private static final long MINIMUM_DISTANCECHANGE_FOR_UPDATE = 1; //  in Meters
     private static final long MINIMUM_TIME_BETWEEN_UPDATE = 500; // yarım dakikada bir in Milliseconds
@@ -69,6 +69,10 @@ public class MainActivity extends Activity {
         tv_user= (TextView) findViewById(R.id.tv_user);
         btn_sorgu= (Button) findViewById(R.id.btn_sorgu);
         btn_harita= (Button) findViewById(R.id.btn_harita);
+        btn_harita.setOnClickListener(this);
+        btn_sorgu.setOnClickListener(this);
+        findCoordinatesButton.setOnClickListener(this);
+        savePointButton.setOnClickListener(this);
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -129,46 +133,6 @@ public class MainActivity extends Activity {
         );
 
 
-
-        findCoordinatesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                populateCoordinatesFromLastKnownLocation();
-            }
-        });
-
-        savePointButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveProximityAlertPoint();
-            }
-        });
-
-        btn_sorgu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (location!=null) {
-                    addProximityAlert(location.getLatitude(), location.getLongitude());
-                    }
-                tv_user.setText("");
-                for (int i=0; i<user.size();i++){
-                    tv_user.append(user.get(i));
-                    tv_user.append("\n");
-
-                }
-            }
-        });
-
-        btn_harita.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(MainActivity.this, Harita.class);
-                Bundle bundle = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.animation, R.anim.animation2).toBundle();
-                startActivity(intent, bundle);
-
-            }
-        });
 
 //pushdenemesi
         /////Bağlantı denemesi json gson falan filan
@@ -308,6 +272,42 @@ public class MainActivity extends Activity {
         location.setLongitude(prefs.getFloat(POINT_LONGITUDE_KEY, 0));
         return location;
     }
+
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_sorgu:
+
+                if (location!=null) {
+                    addProximityAlert(location.getLatitude(), location.getLongitude());
+                }
+                tv_user.setText("");
+                for (int i=0; i<user.size();i++){
+                    tv_user.append(user.get(i));
+                    tv_user.append("\n");
+
+                }
+                break;
+            case R.id.btn_harita:
+                Intent intent = new Intent(MainActivity.this, Harita.class);
+                Bundle bundle = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.animation, R.anim.animation2).toBundle();
+                startActivity(intent, bundle);
+                break;
+            case R.id.save_point_button:
+                saveProximityAlertPoint();
+
+                break;
+            case R.id.find_coordinates_button:
+                populateCoordinatesFromLastKnownLocation();
+                break;
+
+        }
+
+    }
+
+
 
     public class MyLocationListener implements LocationListener {
         public void onLocationChanged(Location location) {
