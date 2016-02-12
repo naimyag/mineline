@@ -1,5 +1,7 @@
 package com.naimyag.ornek.mineline;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -87,7 +89,7 @@ public class Harita extends FragmentActivity implements OnMapReadyCallback {
 
             mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                 @Override
-                public void onMapClick(LatLng latLng) {
+                public void onMapClick(final LatLng latLng) {
 
 
                     LatLng center = circOp.getCenter();
@@ -102,6 +104,12 @@ public class Harita extends FragmentActivity implements OnMapReadyCallback {
                         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                             @Override
                             public boolean onMarkerClick(Marker marker) {
+                                Intent intent = new Intent(Harita.this, Create_Mayin_Activity.class);
+                                Bundle bundle = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.animation, R.anim.animation2).toBundle();
+                                bundle.putDouble("lat",latLng.latitude);
+                                bundle.putDouble("lng",latLng.longitude);
+                                intent.putExtras(bundle);
+                                startActivity(intent, bundle);
                                 return false;
                             }
                         });
