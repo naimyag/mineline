@@ -44,7 +44,7 @@ public class ProximityIntentReceiver extends BroadcastReceiver {
             nb.setContentText("Bölgeye Girdin Hafız");
             nb.setContentTitle("MAYIN");
             nb.setContentIntent(pendingIntent);
-            nb.setSmallIcon(R.drawable.alerts);
+            nb.setSmallIcon(R.drawable.notifibomb);
             nb.setVibrate(new long[] {500L, 500L, 500L, 500L});
 
 

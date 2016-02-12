@@ -2,6 +2,8 @@ package com.naimyag.ornek.mineline;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -63,8 +66,8 @@ public class Harita extends FragmentActivity implements OnMapReadyCallback {
 
         if(mLat!=null&&mLng!=null) {
             // Add a marker in Sydney and move the camera
-            LatLng sydney = new LatLng(mLat, mLng);
-            mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+            final LatLng sydney = new LatLng(mLat, mLng);
+            //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
            // mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
            mMap.setContentDescription(null);
 
@@ -99,7 +102,32 @@ public class Harita extends FragmentActivity implements OnMapReadyCallback {
                     final boolean clicked = distance[0] < radius;
 
                     if(clicked){
-                        mMap.addMarker(new MarkerOptions().position(latLng).title("Mayın Yerleştir!"));
+                        mMap.clear();
+                        final CircleOptions circOp=new CircleOptions().center(new LatLng(mLat, mLng))
+                                .radius(100)
+                                .strokeColor(Color.GRAY)
+                                .strokeWidth(2)
+                                .fillColor(Color.argb(100, 104, 220, 112));
+
+                        mMap.addCircle(circOp);
+
+
+                        CameraPosition cameraPosition = new CameraPosition.Builder()
+                                .target(sydney).zoom(16)
+                                .bearing(90).tilt(20).build();
+
+                        mMap.animateCamera(CameraUpdateFactory
+                                .newCameraPosition(cameraPosition));
+                        //mMap.addMarker(new MarkerOptions().position(latLng).title("Mayın Yerleştir!"));
+
+
+                        Bitmap icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                                R.drawable.bomb);   // where university is the icon name that is used as a marker.
+
+                        mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(icon)).position(latLng).title("Mayın Yerleştir!"));
+
+
+
                         Toast.makeText(Harita.this,"Nağber",Toast.LENGTH_LONG).show();
                         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                             @Override
