@@ -44,6 +44,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private static final NumberFormat nf = new DecimalFormat("##.########");
 
 
+
+
     private LocationManager locationManager;
     Location location;
 
@@ -87,6 +89,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 return;
             }
         }
+
+       // Criteria criteria = new Criteria();
+       // LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+       // String provider = locationManager.getBestProvider(criteria,true);
+       // Location location = locationManager.getLastKnownLocation(provider);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         location =locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -293,6 +300,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
             case R.id.btn_harita:
                 Intent intent = new Intent(MainActivity.this, Harita.class);
                 Bundle bundle = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.animation, R.anim.animation2).toBundle();
+                bundle.putDouble("lat",location.getLatitude());
+                bundle.putDouble("lng",location.getLongitude());
+                intent.putExtras(bundle);
                 startActivity(intent, bundle);
                 break;
             case R.id.save_point_button:
