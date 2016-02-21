@@ -30,7 +30,7 @@ public class ProximityIntentReceiver extends BroadcastReceiver {
             Log.d(getClass().getSimpleName(), "entering");
 
 
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,new Intent(context,MainActivity.class), 0);
 
 
             NotificationManager mng =
@@ -45,7 +45,7 @@ public class ProximityIntentReceiver extends BroadcastReceiver {
             nb.setContentTitle("MAYIN");
             nb.setContentIntent(pendingIntent);
             nb.setSmallIcon(R.drawable.notifibomb);
-            nb.setVibrate(new long[] {500L, 500L, 500L, 500L});
+            nb.setVibrate(new long[]{500L, 500L, 500L, 500L});
 
 
             // API 16+ build altında getNotification()

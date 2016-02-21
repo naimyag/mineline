@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -63,6 +64,17 @@ public class Harita extends FragmentActivity implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                return null;
+            }
+        });
 
         if(mLat!=null&&mLng!=null) {
             // Add a marker in Sydney and move the camera
@@ -151,6 +163,7 @@ public class Harita extends FragmentActivity implements OnMapReadyCallback {
             LatLng sydney = new LatLng(41, 29);
             mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
         }
     }
 }

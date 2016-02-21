@@ -96,7 +96,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
        // Location location = locationManager.getLastKnownLocation(provider);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        location =locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        if(locationManager.isProviderEnabled(locationManager.GPS_PROVIDER)) {
+            location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+        }
+
+        if(locationManager.isProviderEnabled(locationManager.NETWORK_PROVIDER))
+        {
+            location=locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
+        }
+
+
 
         if (location!=null) {
             addProximityAlert(location.getLatitude(),location.getLongitude());
@@ -247,7 +257,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
         }
 
-        location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        //location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         if (location!=null) {
             latitudeEditText.setText(nf.format(location.getLatitude()));
             longitudeEditText.setText(nf.format(location.getLongitude()));
